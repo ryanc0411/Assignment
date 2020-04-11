@@ -1,4 +1,4 @@
-package com.example.assignment.ui.gallery
+package com.example.assignment.ui.login
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,20 +10,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.assignment.R
 
-class GalleryFragment : Fragment() {
+class LoginFragment : Fragment() {
 
-    private lateinit var galleryViewModel: GalleryViewModel
+    private lateinit var loginViewModel: LoginViewModel
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        galleryViewModel =
-                ViewModelProviders.of(this).get(GalleryViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_gallery, container, false)
-        val textView: TextView = root.findViewById(R.id.text_gallery)
-        galleryViewModel.text.observe(viewLifecycleOwner, Observer {
+        loginViewModel =
+                ViewModelProviders.of(this).get(LoginViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_login, container, false)
+        val textView: TextView = root.findViewById(R.id.text_login)
+        loginViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root
