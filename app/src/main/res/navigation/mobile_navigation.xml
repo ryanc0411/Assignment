@@ -36,10 +36,10 @@
         tools:layout="@layout/fragment_login" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.example.assignment.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/nav_register"
+        android:name="com.example.assignment.ui.register.RegisterFragment"
+        android:label="@string/menu_register"
+        tools:layout="@layout/fragment_register" />
 
     <fragment
         android:id="@+id/nav_cart"

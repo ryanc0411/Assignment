@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import com.example.assignment.R
-import com.example.assignment.ui.slideshow.SlideshowViewModel
 
 
 class CartFragment : Fragment() {
