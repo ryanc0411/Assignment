@@ -16,4 +16,11 @@
     <string name="menu_cart">Cart</string>
 
     <string name="menu_order">Order</string>
+
+    <string name="name">Name</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="confirmPass">Confirm Password</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
 </resources>
