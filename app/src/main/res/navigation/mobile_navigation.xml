@@ -42,4 +42,12 @@
         android:name="com.example.assignment.ui.order.OrderFragment"
         android:label="@string/menu_order"
         tools:layout="@layout/fragment_order" />
+
+    <fragment
+        android:id="@+id/nav_logout"
+        android:name="com.example.assignment.ui.login.Logout"
+        android:label="@string/menu_order"
+        />
+
+
 </navigation>
