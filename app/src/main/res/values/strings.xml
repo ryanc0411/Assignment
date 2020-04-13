@@ -10,6 +10,7 @@
     <string name="menu_home">Home</string>
     <string name="menu_login">Login</string>
     <string name="menu_register">Register</string>
+    <string name="menu_logout">Logout</string>
 
     <string name="home_second">Home Second</string>
 
@@ -22,5 +23,8 @@
     <string name="email">Email</string>
     <string name="confirmPass">Confirm Password</string>
     <string name="login">Login</string>
-    <string name="register">Register</string>
+    <string name="register">Don\'t have an account? Sign up here!</string>
+
+    <string name="customer">Register as Customer</string>
+    <string name="seller">Register as Seller</string>
 </resources>
