@@ -62,7 +62,7 @@
             android:paddingStart="10dp"
             android:paddingLeft="10dp"
             android:hint="Email"
-            android:layout_margin="20dp"
+            android:layout_margin="13dp"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             android:background="@drawable/rounded_corner"
@@ -75,7 +75,7 @@
             android:paddingLeft="10dp"
             android:hint="Password"
             android:inputType="textPassword"
-            android:layout_margin="20dp"
+            android:layout_margin="13dp"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             android:background="@drawable/rounded_corner"
@@ -90,7 +90,8 @@
             android:layout_width="wrap_content"
             android:layout_height="35dp" />
         <TextView
-            android:layout_marginTop="20dp"
+            android:id="@+id/forgetpass"
+            android:layout_marginTop="10dp"
             android:textColor="#fff"
             android:text="Forgot Password?"
             android:layout_width="wrap_content"

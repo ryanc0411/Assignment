@@ -24,24 +24,13 @@ class Logout : Fragment() {
     ): View? {
         val root = inflater.inflate(R.layout.fragment_logout, container, false)
 
-
-        root.btn_logout.setOnClickListener{
-            val loading = ProgressDialog(context)
-            loading.setMessage("Loading...")
-            loading.show()
-
-            logout(loading)
-        }
-
-        return root
-    }
-
-    private fun logout(loading: ProgressDialog) {
         FirebaseAuth.getInstance().signOut()
         val intent = Intent(activity, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         Toast.makeText(activity, "Logout Successful", Toast.LENGTH_SHORT).show()
+
+        return root
     }
 
 

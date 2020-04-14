@@ -18,12 +18,14 @@
         android:name="com.example.assignment.ui.login.LoginFragment"
         android:label="@string/menu_login"
         tools:layout="@layout/fragment_login">
-    <action
+
+        <action
         android:id="@+id/action_loginFragment_to_registerFragment"
         app:destination="@id/nav_register"
         app:popUpTo="@id/nav_login" />
-        />
+
     </fragment>
+
 
     <fragment
         android:id="@+id/nav_register"
@@ -35,7 +37,11 @@
         android:id="@+id/nav_cart"
         android:name="com.example.assignment.ui.cart.CartFragment"
         android:label="@string/menu_cart"
-        tools:layout="@layout/fragment_cart" />
+        tools:layout="@layout/fragment_cart" >
+        <action
+            android:id="@+id/action_nav_cart_to_nav_order"
+            app:destination="@id/nav_order" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_order"

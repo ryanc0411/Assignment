@@ -4,8 +4,10 @@ package com.example.assignment.ui.login
 
 import android.app.AlertDialog
 import android.app.ProgressDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,11 +22,13 @@ import com.example.assignment.database.Entity.LoginAttempt
 import com.example.assignment.database.Entity.Users
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.SignInMethodQueryResult
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.fragment_login.view.*
+
 
 class LoginFragment : Fragment() {
 
@@ -41,10 +45,6 @@ class LoginFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_login, container, false)
         root.registerBtn.setOnClickListener{view : View ->
             view.findNavController().navigate(R.id.action_loginFragment_to_registerFragment)}
-//            binding.registerBtn.setOnClickListener{view : View ->
-//                view.findNavController().navigate(com.google.firebase.database.R.id.action_loginFragment_to_registerFragment)}
-//            binding.forgetpwdBtn.setOnClickListener{view : View ->
-//                view.findNavController().navigate(com.google.firebase.database.R.id.action_loginFragment_to_forgetPwdFragment)}
 
 
 
@@ -63,7 +63,56 @@ class LoginFragment : Fragment() {
             login(loading)
         }
 
+        root.forgetpass.setOnClickListener {
+            val builder = AlertDialog.Builder(context)
+            builder.setTitle("\t\t\t\t\tForgot Password?? \n \t\t\t\t\tType your EMAIL here.\n")
+            val view = layoutInflater.inflate(R.layout.fragment_forgetpassword,null)
+            val username = view.findViewById<EditText>(R.id.emailofuser)
+            builder.setView(view)
+            builder.setPositiveButton("Reset", DialogInterface.OnClickListener { _, _ ->
+                forgotPassword(username)
+            })
+            builder.setNegativeButton("close", DialogInterface.OnClickListener { _, _ ->  })
+            builder.show()
+        }
+
+
+
         return root
+    }
+
+    private  fun forgotPassword(username : EditText){
+
+        if (username.text.toString().isEmpty()) {
+            view?.let {
+                Snackbar.make(it, "Please enter email!", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+            }
+            username.requestFocus()
+            return
+        }
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(username.text.toString()).matches()) {
+            view?.let {
+                Snackbar.make(it, "Please enter valid email!", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+            }
+            username.requestFocus()
+            return
+        }
+
+
+
+        mAuth.sendPasswordResetEmail(username.text.toString())
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    view?.let {
+                        Snackbar.make(it, "RESET Email Sent!", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show()
+                    }
+                }
+            }.addOnFailureListener(OnFailureListener { e -> e.printStackTrace() })
+
     }
 
     private fun login(loading: ProgressDialog) {
@@ -133,13 +182,13 @@ class LoginFragment : Fragment() {
                     val intent = Intent(activity, UserActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
-                    Toast.makeText(activity, "Login Successful", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity, "Login User Successful", Toast.LENGTH_SHORT).show()
                 } else {
                     // redirect to the seller page
                     val intent = Intent(activity, SellerActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
-                    Toast.makeText(activity, "Login Successful", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity, "Login Seller Successful", Toast.LENGTH_SHORT).show()
                 }
             }
         })

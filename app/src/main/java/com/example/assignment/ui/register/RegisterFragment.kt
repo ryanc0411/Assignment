@@ -44,10 +44,7 @@ class RegisterFragment : Fragment() {
             savedInstanceState: Bundle?
         ): View? {
             val root = inflater.inflate(R.layout.fragment_register, container, false)
-//        binding.customNavbar.back.setOnClickListener {
-//            view?.findNavController()?.popBackStack() }
-//        binding.customNavbar.userNavbar.visibility = View.GONE
-//        binding.customNavbar.sellerNavbar.visibility = View.GONE
+
 
         // initiate the firebase database
         ref = FirebaseDatabase.getInstance().getReference("users")

@@ -23,4 +23,8 @@
         <item name="android:layout_marginEnd">35dp</item>
     </style>
 
+    <style name="AppTheme.RoundedCornerMaterialButton" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:background">@drawable/rounded_shape</item>
+    </style>
+
 </resources>
