@@ -2,6 +2,6 @@
 <layoutAnimation xmlns:andriod="http://schemas.android.com/apk/res/android"
     andriod:animation="@anim/item_animation_from_left"
     andriod:animationOrder="normal"
-    andriod:delay="15"
+    andriod:delay="15%"
     >
 </layoutAnimation>

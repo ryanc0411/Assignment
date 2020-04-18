@@ -20,11 +20,11 @@
 
     </fragment>
 
-    <fragment
-        android:id="@+id/nav_ADDFoodInfo"
-        android:name="com.example.assignment.seller.FoodFragment"
-        android:label="@string/menu_AddShop"
-        />
+<!--    <fragment-->
+<!--        android:id="@+id/nav_ADDFoodInfo"-->
+<!--        android:name="com.example.assignment.seller.FoodFragment"-->
+<!--        android:label="@string/menu_AddShop"-->
+<!--        />-->
 
     <fragment
         android:id="@+id/nav_logout"

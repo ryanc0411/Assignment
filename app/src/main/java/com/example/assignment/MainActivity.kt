@@ -4,6 +4,7 @@ package com.example.assignment
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.widget.Toast
 import androidx.activity.viewModels
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -16,11 +17,14 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.example.assignment.EventBus.CategoryClick
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(setOf(
-            R.id.nav_home, R.id.nav_login, R.id.nav_register, R.id.nav_cart, R.id.nav_order), drawerLayout)
+            R.id.nav_home, R.id.nav_login,R.id.nav_menu, R.id.nav_register, R.id.nav_cart, R.id.nav_order), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
@@ -51,6 +55,28 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    //Event Bus
+    override fun onStart(){
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        EventBus.getDefault().unregister(this)
+        super.onStop()
+    }
+
+    @Subscribe(sticky = true,threadMode=ThreadMode.MAIN)
+    fun onCategorySelected(event: CategoryClick)
+    {
+        if(event.isSuccess)
+        {
+            //Toast.makeText(this,"Click to"+event.category.name,Toast.LENGTH_SHORT).show()
+            findNavController(R.id.nav_host_fragment).navigate(R.id.nav_food_list)
+        }
+
     }
 }
 

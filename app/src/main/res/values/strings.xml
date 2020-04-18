@@ -28,18 +28,12 @@
 
     <string name="customer">Register as Customer</string>
     <string name="seller">Register as Seller</string>
-    <string name="menu_Canteen">Redbricks_Canteen_Shop</string>
+    <string name="menu_category">Categories</string>
     <string name="menu_AddShop">Add Shop</string>
     <string name="menu_ADDFood">ADD Food</string>
     <string name="popular_categories">Popular categories</string>
     <string name="best_deals">Best Deals</string>
+    <string name="menu_food_list">Food List</string>
 
-
-    <string-array name="canteen_list">
-            <item>Redbricks</item>
-            <item>Yellowbricks</item>
-            <item>Bluebricks</item>
-
-        </string-array>
 
 </resources>

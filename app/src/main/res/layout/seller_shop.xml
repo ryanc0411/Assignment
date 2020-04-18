@@ -111,15 +111,6 @@
                     android:textStyle="bold"
                     android:textSize="24dp" />
 
-                <Spinner
-                    android:ems="16"
-                    android:id="@+id/CanteenNameDropdown"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_below="@+id/templateEditHeader"
-                    android:layout_margin="10dp"
-                    android:entries="@array/canteen_list" />
-
                 <EditText
                     android:id="@+id/ShopNameEditText"
                     android:layout_width="match_parent"

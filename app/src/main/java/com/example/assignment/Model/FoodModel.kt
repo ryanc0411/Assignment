@@ -1,6 +1,7 @@
 package com.example.assignment.Model
 
-class FoodModel {
+class FoodModel
+{
     var name:String?=null
     var image:String?=null
     var id:String?=null

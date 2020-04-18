@@ -9,21 +9,21 @@
         android:id="@+id/nav_home"
         android:name="com.example.assignment.ui.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home">
+        tools:layout="@layout/fragment_home"/>
 
-        <action
-            android:id="@+id/action_home_to_redbricks"
-            app:destination="@id/nav_red"
-            app:popUpTo="@id/nav_home"/>
 
-    </fragment>
 
     <fragment
-        android:id="@+id/nav_red"
+        android:id="@+id/nav_menu"
         android:name="com.example.assignment.ui.menu.MenuFragment"
-        android:label="@string/menu_Canteen"
-        tools:layout="@layout/fragment_redbrick_shop"/>
+        android:label="@string/menu_category"
+        tools:layout="@layout/fragmennt_category"/>
 
+    <fragment
+        android:id="@+id/nav_food_list"
+        android:name="com.example.assignment.ui.foodlist.FoodListFragment"
+        android:label="@string/menu_food_list"
+        tools:layout="@layout/fragment_food_list"/>
 
     <fragment
         android:id="@+id/nav_login"
