@@ -4,8 +4,10 @@ package com.example.assignment.ui.login
 
 import android.app.AlertDialog
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Patterns
 import android.view.LayoutInflater
@@ -179,6 +181,10 @@ class LoginFragment : Fragment() {
                 val urole = p0.getValue(Users::class.java)
                 if (urole!!.userRole.equals("Customer")) {
                     // redirect to the customer page
+                    val sharedPreferences:SharedPreferences = activity!!.getSharedPreferences("username1",Context.MODE_PRIVATE )
+                    val editor: SharedPreferences.Editor = sharedPreferences.edit()
+                    editor.putString("username",urole.username)
+                    editor.commit()
                     val intent = Intent(activity, UserActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)

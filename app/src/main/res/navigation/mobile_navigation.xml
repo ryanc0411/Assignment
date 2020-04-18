@@ -11,7 +11,19 @@
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home">
 
+        <action
+            android:id="@+id/action_home_to_redbricks"
+            app:destination="@id/nav_red"
+            app:popUpTo="@id/nav_home"/>
+
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_red"
+        android:name="com.example.assignment.ui.menu.MenuFragment"
+        android:label="@string/menu_Canteen"
+        tools:layout="@layout/fragment_redbrick_shop"/>
+
 
     <fragment
         android:id="@+id/nav_login"

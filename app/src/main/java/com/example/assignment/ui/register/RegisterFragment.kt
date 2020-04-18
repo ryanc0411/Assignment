@@ -3,6 +3,7 @@ package com.example.assignment.ui.register
 import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.os.Bundle
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase
 import androidx.databinding.DataBindingUtil
 import com.example.assignment.database.Entity.LoginAttempt
 import com.example.assignment.database.Entity.Users
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_register.view.*
 
 class RegisterFragment : Fragment() {
@@ -102,6 +104,14 @@ class RegisterFragment : Fragment() {
             isValid = false
         }
 
+        if (!Patterns.EMAIL_ADDRESS.matcher(emailText.text.toString()).matches()) {
+            view?.let {
+                Snackbar.make(it, "Please enter valid email!", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+                isValid = false
+            }
+            emailText.requestFocus()
+        }
         return isValid
     }
 

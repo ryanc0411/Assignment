@@ -4,7 +4,8 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="colorBar">#fff</color>
-    <color name="backgroundColor">#3a3838</color>
+    <color name="backgroundColor">#35E4B9</color>
     <color name="textColor">#0A74FF</color>
     <color name="hintColor">#D3D3D3</color>
+    <color name="overlay_color">#55333639</color>
 </resources>
