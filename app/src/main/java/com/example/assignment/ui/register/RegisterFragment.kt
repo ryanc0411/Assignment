@@ -27,6 +27,7 @@ import com.example.assignment.database.Entity.LoginAttempt
 import com.example.assignment.database.Entity.Users
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_register.view.*
+import java.util.regex.Pattern.compile
 
 class RegisterFragment : Fragment() {
 
@@ -78,7 +79,7 @@ class RegisterFragment : Fragment() {
 
     private fun checkUserInput(): Boolean {
         var isValid = true
-
+        val patterns = compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%!\\-_?&])(?=\\S+\$).{8,}")
         // ensure there is not any blank edit text
         if (nameText.text.toString().trim().isEmpty()) {
             nameText.setError("Name is required")
@@ -92,6 +93,11 @@ class RegisterFragment : Fragment() {
             passwordText.setError("Password is required")
             isValid = false
         }
+        else if((!patterns.matcher(passwordText.text.toString()).matches())){
+            passwordText.setError("Password format need to include uppercase, lowercase, number and symbol")
+            isValid = false
+        }
+
         if (retypeText.text.toString().isEmpty()) {
             retypeText.setError("Retype password is required")
             isValid = false
@@ -112,6 +118,7 @@ class RegisterFragment : Fragment() {
             }
             emailText.requestFocus()
         }
+
         return isValid
     }
 
@@ -191,6 +198,8 @@ class RegisterFragment : Fragment() {
                 builder.show()
             }
     }
+
+
 
 }
 
