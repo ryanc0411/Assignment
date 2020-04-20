@@ -10,13 +10,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.view.get
 import androidx.lifecycle.Observer
 import com.andremion.counterfab.CounterFab
 import com.bumptech.glide.Glide
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
 import com.example.assignment.Common.Common
 import com.example.assignment.EventBus.CountCartEvent
+import com.example.assignment.EventBus.navigate
 import com.example.assignment.Model.FoodModel
 import com.example.assignment.Model.RatingModel
 import com.example.assignment.R
@@ -30,12 +30,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.gson.Gson
 import dmax.dialog.SpotsDialog
-import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.fragment_register.view.*
 import org.greenrobot.eventbus.EventBus
 import java.lang.StringBuilder
 
@@ -79,12 +76,12 @@ class FoodDetailFragment : Fragment(), TextWatcher {
             ViewModelProviders.of(this).get(FoodDetailViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_food_detail, container, false)
         initViews(root)
-        foodDetailViewModel.getMutableLiveDataFood().observe(viewLifecycleOwner, Observer {
+        foodDetailViewModel.getMutableLiveDataFood().observe(this, Observer {
             displayInfo(it)
 
         })
 
-        foodDetailViewModel.getMutableLiveDataComment().observe(viewLifecycleOwner, Observer {
+        foodDetailViewModel.getMutableLiveDataComment().observe(this, Observer {
             submitRatingToFirebase(it)
         })
         return root
@@ -240,43 +237,59 @@ class FoodDetailFragment : Fragment(), TextWatcher {
 
         //Event
         val user = mAuth.currentUser
-        if(user!=null) {
+
             btnRating!!.setOnClickListener {
-                showDialogRating()
+                if(user!=null) {
+                    showDialogRating()
+                }else{
+                    EventBus.getDefault().postSticky(navigate(true))
+                    Toast.makeText(context, "Please login in your acc!", Toast.LENGTH_SHORT).show()
+                }
             }
 
-            btnCart!!.setOnClickListener{
-                val cartItem = CartItem()
-                cartItem.uid = user!!.uid
-                cartItem.foodId = Common.foodSelected!!.id!!
-                cartItem.foodName = Common.foodSelected!!.name!!
-                cartItem.foodImage = Common.foodSelected!!.image!!
-                cartItem.foodPrice = Common.foodSelected!!.price!!.toDouble()
-                cartItem.foodQuantity = number_button!!.number.toInt()
-                cartItem.foodExtraPrice = Common.calculateExtraPrice(Common.foodSelected!!.userSelectedSize,Common.foodSelected!!.userSelectedAddon)
-                if(Common.foodSelected!!.userSelectedAddon!=null)
-                    cartItem.foodAddon = Gson().toJson(Common.foodSelected!!.userSelectedAddon)
-                else
-                cartItem.foodAddon = "Default"
-                if(Common.foodSelected!!.userSelectedSize!=null)
-                    cartItem.foodSize = Gson().toJson(Common.foodSelected!!.userSelectedSize)
-                else
-                cartItem.foodSize = "Default"
+            btnCart!!.setOnClickListener {
+                if (user != null) {
+                    val cartItem = CartItem()
+                    cartItem.uid = user!!.uid
+                    cartItem.foodId = Common.foodSelected!!.id!!
+                    cartItem.foodName = Common.foodSelected!!.name!!
+                    cartItem.foodImage = Common.foodSelected!!.image!!
+                    cartItem.foodPrice = Common.foodSelected!!.price!!.toDouble()
+                    cartItem.foodQuantity = number_button!!.number.toInt()
+                    cartItem.foodExtraPrice = Common.calculateExtraPrice(
+                        Common.foodSelected!!.userSelectedSize,
+                        Common.foodSelected!!.userSelectedAddon
+                    )
+                    if (Common.foodSelected!!.userSelectedAddon != null)
+                        cartItem.foodAddon = Gson().toJson(Common.foodSelected!!.userSelectedAddon)
+                    else
+                        cartItem.foodAddon = "Default"
+                    if (Common.foodSelected!!.userSelectedSize != null)
+                        cartItem.foodSize = Gson().toJson(Common.foodSelected!!.userSelectedSize)
+                    else
+                        cartItem.foodSize = "Default"
 
-                compositeDisposable.add(cartDataSource.insertOrReplaceAll(cartItem)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({
-                        Toast.makeText(context, "Add to cart success!", Toast.LENGTH_SHORT).show()
-                        //call mainactivity update counter fab
-                        EventBus.getDefault().postSticky(CountCartEvent(true))
-                    }, { t: Throwable? -> Toast.makeText(context, "[INSERT CART]" + t!!.message, Toast.LENGTH_SHORT).show()
-                    })
-                )
+                    compositeDisposable.add(
+                        cartDataSource.insertOrReplaceAll(cartItem)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe({
+                                Toast.makeText(context, "Add to cart success!", Toast.LENGTH_SHORT).show()
+                                //call mainactivity update counter fab
+                                EventBus.getDefault().postSticky(CountCartEvent(true))
+                            }, { t: Throwable? ->
+                                Toast.makeText(context, "[INSERT CART]" + t!!.message, Toast.LENGTH_SHORT).show()
+                            })
+                    )
 
 
+                }else{
+                    EventBus.getDefault().postSticky(navigate(true))
+                    Toast.makeText(context, "Please login in your acc!", Toast.LENGTH_SHORT).show()
+                }
             }
-        }
+
+
 
         img_add_on!!.setOnClickListener{
             if(Common.foodSelected!!.addon!=null)

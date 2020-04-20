@@ -99,6 +99,7 @@ class MyFoodListAdapter (internal var context: Context,
             }
                 else {
                         EventBus.getDefault().postSticky(navigate(true))
+                    Toast.makeText(context, "Please login in your acc!", Toast.LENGTH_SHORT).show()
                     }
         }
 
