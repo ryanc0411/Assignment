@@ -42,14 +42,14 @@ class HomeFragment : Fragment() {
 //        }
         initView(root)
         //Bind date
-        homeViewModel.popularList.observe(this, Observer {
+        homeViewModel.popularList.observe(viewLifecycleOwner, Observer {
             val listData =it
-            val adapter = MyPopularCategoriesAdapter(context!!,listData)
+            val adapter = MyPopularCategoriesAdapter(requireContext(),listData)
             recyclerView!!.adapter = adapter
             recyclerView!!.layoutAnimation = layoutAnimationController
         })
-        homeViewModel.bestDealList.observe(this, Observer {
-            val adapter = MyBestDealsAdapter(context!!,it,false)
+        homeViewModel.bestDealList.observe(viewLifecycleOwner, Observer {
+            val adapter = MyBestDealsAdapter(requireContext(),it,false)
             viewPager!!.adapter = adapter
         })
         return root

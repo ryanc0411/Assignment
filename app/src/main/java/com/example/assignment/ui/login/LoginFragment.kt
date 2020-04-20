@@ -38,6 +38,8 @@ class LoginFragment : Fragment() {
     lateinit var  passwordText: EditText
     lateinit var ref: DatabaseReference
     val mAuth = FirebaseAuth.getInstance()
+    lateinit var sharedPreferences: SharedPreferences
+    lateinit var editor: SharedPreferences.Editor
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -118,54 +120,84 @@ class LoginFragment : Fragment() {
     }
 
     private fun login(loading: ProgressDialog) {
-        mAuth.signInWithEmailAndPassword(emailText.text.toString(), passwordText.text.toString()).addOnCompleteListener {
-            if (it.isSuccessful) {
-                // get the created user
-                val user = mAuth.currentUser
-                // get the created user ID
-                val uid = user!!.uid
 
-                // check the login attempt limit
-                var registerEmail = emailText.text.toString()
-                var emailRoot = registerEmail.replace(".", " ")
-                ref.child("loginAttempt").child(emailRoot).addListenerForSingleValueEvent(object: ValueEventListener {
-                    override fun onCancelled(p0: DatabaseError) {
-                        TODO("Not yet implemented")
-                    }
+        var isValid = true
+        if (emailText.text.toString().trim().isEmpty()) {
+            emailText.setError("Email is required")
+            isValid = false
+            loading.dismiss()
+        }
+        if (passwordText.text.toString().isEmpty()) {
+            passwordText.setError("Password is required")
+            isValid = false
+            loading.dismiss()
+        }
 
-                    override fun onDataChange(p0: DataSnapshot) {
-                        val currentAttempt = p0.getValue(LoginAttempt::class.java)!!.currentAttempt
-                        if (currentAttempt < 4) {
-                            // login attempt within valid range, proceed to login
-                            resetLoginAttempt()
-                            // determine the login user role
-                            checkUserRole(loading, user, uid)
-                        } else {
-                            // login attempt exceeds 3
-                            // this account has been blocked
-                            loading.dismiss()
-                            val builder = AlertDialog.Builder(context)
-                            builder.setTitle("This email has been blocked!")
-                            builder.setMessage("Please contact to administrators 011-34567890!")
-                            builder.setPositiveButton(android.R.string.ok) { dialog, which ->
-                                emailText.requestFocus()
-                            }
-                            builder.show()
-                        }
-                    }
-                })
-            } else {
-                // check if email correct, but password incorrect
-                // then update the login attempt
-                checkEmailExistsOrNot()
+        if (!Patterns.EMAIL_ADDRESS.matcher(emailText.text.toString()).matches()&&!emailText.text.toString().trim().isEmpty()) {
+            view?.let {
+                Snackbar.make(it, "Please enter valid email!", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+                isValid = false
                 loading.dismiss()
-                // pop up a error message
-                val builder = AlertDialog.Builder(context)
-                builder.setTitle("Invalid email and password!")
-                builder.setPositiveButton(android.R.string.ok) { dialog, which ->
-                    emailText.requestFocus()
+            }
+            emailText.requestFocus()
+        }
+
+        if (isValid) {
+            mAuth.signInWithEmailAndPassword(
+                emailText.text.toString(),
+                passwordText.text.toString()
+            ).addOnCompleteListener {
+                if (it.isSuccessful) {
+                    // get the created user
+                    val user = mAuth.currentUser
+                    // get the created user ID
+                    val uid = user!!.uid
+
+                    // check the login attempt limit
+                    var registerEmail = emailText.text.toString()
+                    var emailRoot = registerEmail.replace(".", " ")
+                    ref.child("loginAttempt").child(emailRoot)
+                        .addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onCancelled(p0: DatabaseError) {
+                                TODO("Not yet implemented")
+                            }
+
+                            override fun onDataChange(p0: DataSnapshot) {
+                                val currentAttempt =
+                                    p0.getValue(LoginAttempt::class.java)!!.currentAttempt
+                                if (currentAttempt < 4) {
+                                    // login attempt within valid range, proceed to login
+                                    resetLoginAttempt()
+                                    // determine the login user role
+                                    checkUserRole(loading, user, uid)
+                                } else {
+                                    // login attempt exceeds 3
+                                    // this account has been blocked
+                                    loading.dismiss()
+                                    val builder = AlertDialog.Builder(context)
+                                    builder.setTitle("This email has been blocked!")
+                                    builder.setMessage("Please contact to administrators 011-34567890!")
+                                    builder.setPositiveButton(android.R.string.ok) { dialog, which ->
+                                        emailText.requestFocus()
+                                    }
+                                    builder.show()
+                                }
+                            }
+                        })
+                } else {
+                    // check if email correct, but password incorrect
+                    // then update the login attempt
+                    checkEmailExistsOrNot()
+                    loading.dismiss()
+                    // pop up a error message
+                    val builder = AlertDialog.Builder(context)
+                    builder.setTitle("Invalid email and password!")
+                    builder.setPositiveButton(android.R.string.ok) { dialog, which ->
+                        emailText.requestFocus()
+                    }
+                    builder.show()
                 }
-                builder.show()
             }
         }
     }
@@ -189,6 +221,7 @@ class LoginFragment : Fragment() {
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
                     Toast.makeText(activity, "Login User Successful", Toast.LENGTH_SHORT).show()
+
                 } else {
                     // redirect to the seller page
                     val intent = Intent(activity, SellerActivity::class.java)

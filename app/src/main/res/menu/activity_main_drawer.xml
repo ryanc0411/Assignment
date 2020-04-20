@@ -17,22 +17,13 @@
             android:id="@+id/nav_menu"
             android:icon="@drawable/ic_restaurant_black_24dp"
             android:title="@string/menu_category" />
-        <item
-            android:id="@+id/nav_cart"
-            android:icon="@drawable/ic_shopping_cart_black_24dp"
-            android:title="@string/menu_cart" />
-
-        <item
-            android:id="@+id/nav_order"
-            android:icon="@drawable/ic_event_available_black_24dp"
-            android:title="@string/menu_order" />
     </group>
 
-    <item android:title="Communication">
-        <menu>
-            <item android:id="@+id/nav_food_list"
-                android:icon="@drawable/ic_restaurant_black_24dp"
-                android:title="@string/menu_food_list"/>
-        </menu>
-    </item>
+<!--    <item android:title="Communication">-->
+<!--        <menu>-->
+<!--            <item android:id="@+id/nav_food_list"-->
+<!--                android:icon="@drawable/ic_restaurant_black_24dp"-->
+<!--                android:title="@string/menu_food_list"/>-->
+<!--        </menu>-->
+<!--    </item>-->
 </menu>

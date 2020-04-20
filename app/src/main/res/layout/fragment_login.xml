@@ -84,6 +84,7 @@
             android:id="@+id/button_login"
             android:paddingRight="20dp"
             android:paddingLeft="20dp"
+            android:backgroundTint="@android:color/white"
             android:background="@drawable/round_corner_buttom"
             android:text="sign in"
             android:textColor="#777"

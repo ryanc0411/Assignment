@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.assignment.Common.Common
-import com.example.assignment.Common.Common.categorySelected
 import com.example.assignment.Model.FoodModel
 
 class FoodListViewModel : ViewModel()  {
