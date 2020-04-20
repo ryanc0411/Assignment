@@ -61,7 +61,6 @@ class UserActivity : AppCompatActivity() {
         cartDataSource = LocalCartDataSource(CartDatabase.getInstance(this).cartDAO())
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-        var User:String?=null
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { view ->
@@ -77,30 +76,23 @@ class UserActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        navView.setNavigationItemSelectedListener(object :NavigationView.OnNavigationItemSelectedListener{
-            override fun onNavigationItemSelected(p0: MenuItem): Boolean {
-               p0.isChecked = true
-                drawerLayout!!.closeDrawers()
-                if(p0.itemId == R.id.nav_logout)
-                {
-                    signOut()
-                }else if(p0.itemId == R.id.nav_menu){
-                    navController.navigate(R.id.nav_menu)
-                }
-                else if(p0.itemId == R.id.nav_home){
-                    navController.navigate(R.id.nav_home)
-                }
-                else if(p0.itemId == R.id.nav_cart){
-                    navController.navigate(R.id.nav_cart)
-                }
-                else if(p0.itemId == R.id.nav_order){
-                    navController.navigate(R.id.nav_order)
-                }
-
-                return true
+        navView.setNavigationItemSelectedListener { p0 ->
+            p0.isChecked = true
+            drawerLayout!!.closeDrawers()
+            if(p0.itemId == R.id.nav_logout) {
+                signOut()
+            }else if(p0.itemId == R.id.nav_menu){
+                navController.navigate(R.id.nav_menu)
+            } else if(p0.itemId == R.id.nav_home){
+                navController.navigate(R.id.nav_home)
+            } else if(p0.itemId == R.id.nav_cart){
+                navController.navigate(R.id.nav_cart)
+            } else if(p0.itemId == R.id.nav_order){
+                navController.navigate(R.id.nav_order)
             }
 
-        })
+            true
+        }
 
 
         countCartItem()
@@ -132,10 +124,8 @@ class UserActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.main, menu)
         val sharedPreferences: SharedPreferences = this.getSharedPreferences("username1", Context.MODE_PRIVATE )
         val textView: TextView = findViewById<TextView>(R.id.Usernametext)
-        val textStatus: TextView = findViewById<TextView>(R.id.status)
         val username = sharedPreferences.getString("username","TARUC FOOD")
-        textView.text =  username
-        textStatus.text = "Welcome " + username + " ,you're loggesd in!"
+        textView.text =  "Hey, " + username
         return true
     }
 
@@ -217,7 +207,10 @@ class UserActivity : AppCompatActivity() {
                     }
 
                     override fun onError(e: Throwable) {
+                        if(!e.message!!.contains("Query returned empty"))
                         Toast.makeText(this@UserActivity, "[COUNT CART]" + e.message, Toast.LENGTH_SHORT).show()
+                        else
+                            fab.count = 0
                     }
 
                 })

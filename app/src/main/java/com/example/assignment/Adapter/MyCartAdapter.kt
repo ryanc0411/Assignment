@@ -70,4 +70,9 @@ class MyCartAdapter (internal var context: Context,
         }
 
     }
+
+    fun getItemAtPosition(pos: Int): CartItem {
+        return cartItems[pos]
+
+    }
 }

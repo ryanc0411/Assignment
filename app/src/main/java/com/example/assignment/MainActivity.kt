@@ -39,26 +39,18 @@ import org.greenrobot.eventbus.ThreadMode
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var cartDataSource:CartDataSource
-    private var  mAuth = FirebaseAuth.getInstance()
-    private var user = mAuth.currentUser
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        cartDataSource = LocalCartDataSource(CartDatabase.getInstance(this).cartDAO())
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
-//        val fab: FloatingActionButton = findViewById(R.id.fab)
-//        fab.setOnClickListener {
-//
-//        }
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(setOf(

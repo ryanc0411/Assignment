@@ -49,10 +49,8 @@ class SellerActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.main, menu)
         val sharedPreferences: SharedPreferences = this.getSharedPreferences("username1", Context.MODE_PRIVATE )
         val textView: TextView = findViewById<TextView>(R.id.Usernametext)
-        val textStatus: TextView = findViewById<TextView>(R.id.status)
         val username = sharedPreferences.getString("username","TARUC FOOD")
         textView.text =  username
-        textStatus.text = "Welcome " + username + " ,you're Seller !"
 
         return true
     }

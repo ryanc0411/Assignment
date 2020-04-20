@@ -92,11 +92,7 @@ class MyFoodListAdapter (internal var context: Context,
                                 .show()
                             //call mainactivity update counter fab
                             EventBus.getDefault().postSticky(CountCartEvent(true))
-                        }, { t: Throwable? ->
-                            Toast.makeText(
-                                context,
-                                "[INSERT CART]" + t!!.message,
-                                Toast.LENGTH_SHORT
+                        }, { t: Throwable? -> Toast.makeText(context, "[INSERT CART]" + t!!.message, Toast.LENGTH_SHORT
                             ).show()
                         })
                 )

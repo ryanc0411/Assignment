@@ -23,12 +23,5 @@
         android:fontFamily="@font/brandon_medium"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-    <TextView
-        android:id="@+id/status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/nav_header_subtitle"
-        android:fontFamily="@font/brandon_medium"
-        android:textColor="@android:color/white"/>
 
 </LinearLayout>

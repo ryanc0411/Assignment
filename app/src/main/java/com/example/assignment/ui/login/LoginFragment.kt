@@ -115,6 +115,12 @@ class LoginFragment : Fragment() {
                             .setAction("Action", null).show()
                     }
                 }
+                else {
+                    view?.let {
+                        Snackbar.make(it, "Email are not register yet!", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show()
+                    }
+                }
             }.addOnFailureListener(OnFailureListener { e -> e.printStackTrace() })
 
     }
