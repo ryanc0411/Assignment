@@ -94,7 +94,7 @@ class RegisterFragment : Fragment() {
             isValid = false
         }
         else if((!patterns.matcher(passwordText.text.toString()).matches())){
-            passwordText.setError("Password format need to include uppercase, lowercase, number and symbol")
+            passwordText.setError("Password format must have 8 character and include uppercase, lowercase, number and symbol")
             isValid = false
         }
 
