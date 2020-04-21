@@ -13,5 +13,7 @@ class Order {
     var discount:Int =0
     var cartItemList:List<CartItem>?=null
     var createDate:Long?=null
+    var orderNumber:String?=null
+    var orderStatus:Int=0
 
 }

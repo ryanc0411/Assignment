@@ -17,7 +17,7 @@
 
     <string name="menu_cart">Cart</string>
 
-    <string name="menu_order">Order</string>
+    <string name="menu_order">View Orders</string>
 
     <string name="name">Name</string>
     <string name="password">Password</string>
