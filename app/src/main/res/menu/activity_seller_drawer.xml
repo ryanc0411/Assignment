@@ -3,20 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_ADDShopInfo"
-            android:icon="@drawable/ic_store_mall_directory_black_24dp"
-            android:title="@string/menu_AddShop" />
+    <group android:id="@+id/user_home_group">
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/menu_home" />
 
-        <item
-            android:id="@+id/nav_ADDFoodInfo"
-            android:icon="@drawable/ic_restaurant_black_24dp"
-            android:title="@string/menu_ADDFood" />
-
+    <item
+        android:id="@+id/nav_menu"
+        android:icon="@drawable/ic_restaurant_black_24dp"
+        android:title="@string/menu_category" />
+    </group>
+    <group android:id="@+id/user_user_group">
         <item
             android:id="@+id/nav_logout"
-            android:icon="@drawable/ic_person_outline_black_24dp"
+            android:icon="@drawable/ic_exit_to_app_black_24dp"
             android:title="@string/menu_logout" />
+
+
+
     </group>
 </menu>

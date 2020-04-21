@@ -3,33 +3,56 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_seller"
-    app:startDestination="@+id/nav_ADDShopInfo">
+    app:startDestination="@+id/nav_home">
 
 
 
     <fragment
-        android:id="@+id/nav_ADDShopInfo"
-        android:name="com.example.assignment.seller.CanteenFragment"
-        android:label="@string/menu_AddShop"
-        >
+        android:id="@+id/nav_home"
+        android:name="com.example.assignment.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home"/>
 
+    <fragment
+        android:id="@+id/nav_menu"
+        android:name="com.example.assignment.ui.menu.MenuFragment"
+        android:label="@string/menu_category"
+        tools:layout="@layout/fragmennt_category">
         <action
-            android:id="@+id/action_ADDCanteen_to_ADDFood"
-            app:destination="@id/nav_ADDFoodInfo"
-            app:popUpTo="@id/nav_ADDShopInfo"/>
+            android:id="@+id/action_menu_to_food_list"
+            app:destination="@id/nav_food_list"
+            app:popUpTo="@id/nav_menu"
+            />
+
 
     </fragment>
 
-<!--    <fragment-->
-<!--        android:id="@+id/nav_ADDFoodInfo"-->
-<!--        android:name="com.example.assignment.seller.FoodFragment"-->
-<!--        android:label="@string/menu_AddShop"-->
-<!--        />-->
+    <fragment
+        android:id="@+id/nav_food_list"
+        android:name="com.example.assignment.ui.foodlist.FoodListFragment"
+        android:label="@string/menu_food_list"
+        tools:layout="@layout/fragment_food_list">
+
+        <action
+            android:id="@+id/action_food_list_to_food_details"
+            app:destination="@id/nav_food_detail"
+            app:popUpTo="@id/nav_food_list"
+            />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/nav_food_detail"
+        android:name="com.example.assignment.ui.fooddetails.FoodDetailFragment"
+        android:label="@string/menu_food_detail"
+        tools:layout="@layout/fragment_food_detail"/>
+
+
 
     <fragment
         android:id="@+id/nav_logout"
-        android:name="com.example.assignment.ui.login.Logout"
-        android:label="@string/menu_order"
+        android:label="@string/menu_logout"
         />
 
 

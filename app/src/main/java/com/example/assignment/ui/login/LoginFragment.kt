@@ -236,6 +236,10 @@ class LoginFragment : Fragment() {
                     Toast.makeText(activity, "Login User Successful", Toast.LENGTH_SHORT).show()
 
                 } else {
+                    val sharedPreferences:SharedPreferences = activity!!.getSharedPreferences("username1",Context.MODE_PRIVATE )
+                    val editor: SharedPreferences.Editor = sharedPreferences.edit()
+                    editor.putString("username",urole.username)
+                    editor.commit()
                     // redirect to the seller page
                     Common.userName = urole.username
                     Common.homeAddress = urole.homeAddress

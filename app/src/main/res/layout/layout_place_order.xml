@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -93,8 +94,83 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-
-
     </RadioGroup>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/visaCardCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@color/colorBar"
+            android:visibility="gone"
+            android:padding="10dp"
+            app:cardCornerRadius="10dp"
+            >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:text="@string/visa_card" />
+        <EditText
+            android:id="@+id/nameOnCardEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:textColorHint="@color/hintColor"
+            android:hint="@string/name_on_card"/>
+        <EditText
+            android:id="@+id/cardNumberEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number"
+            android:textColorHint="@color/hintColor"
+            android:hint="@string/card_number"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/mmyyEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:maxLength="5"
+                android:inputType="number|text"
+                android:textColorHint="@color/hintColor"
+                android:hint="@string/mm_yy"/>
+            <EditText
+                android:id="@+id/cvcEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:maxLength="3"
+                android:inputType="number"
+                android:textColorHint="@color/hintColor"
+                android:hint="@string/cvc"/>
+        </LinearLayout>
+
+        </LinearLayout>
+
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_alignParentBottom="true"
+                android:id="@+id/btn_creditcard"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="PAY"
+                android:layout_below="@+id/visaCardCardView"/>
+
+        </androidx.cardview.widget.CardView>
+
 
 </LinearLayout>

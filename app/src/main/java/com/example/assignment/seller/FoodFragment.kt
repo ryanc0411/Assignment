@@ -174,7 +174,7 @@
 //            val builder = AlertDialog.Builder(context)
 //            builder.setTitle("Please upload your Shop image!")
 //            builder.setPositiveButton(android.R.string.ok) { dialog, which -> }
-//            builder.show()
+//            builder.show()*/
 //            isValid = false
 //        }
 //        return isValid

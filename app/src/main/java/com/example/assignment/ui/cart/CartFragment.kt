@@ -1,7 +1,9 @@
 package com.example.assignment.ui.cart
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.graphics.Color
+import android.opengl.Visibility
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.os.Parcel
@@ -26,10 +28,8 @@ import com.example.assignment.EventBus.MenuItemBack
 import com.example.assignment.EventBus.UpdateItemInCart
 import com.example.assignment.Model.Order
 import com.example.assignment.R
-import com.example.assignment.database.Entity.CartDataSource
-import com.example.assignment.database.Entity.CartDatabase
-import com.example.assignment.database.Entity.LocalCartDataSource
-import com.example.assignment.database.Entity.Users
+import com.example.assignment.UserActivity
+import com.example.assignment.database.Entity.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import io.reactivex.SingleObserver
@@ -56,12 +56,18 @@ class CartFragment : Fragment(), ILoadTimeFromFirebaseCallBack {
     val mAuth = FirebaseAuth.getInstance()
     var user = mAuth.currentUser
     private lateinit var btn_place_order: Button
+    lateinit var nameOnCard: EditText
+    lateinit var cardNumber: EditText
+    lateinit var mmyy: EditText
+    lateinit var cvc: EditText
 
     var txt_empty_cart:TextView?=null
     var txt_Total_price:TextView?=null
     var group_place_holder:CardView?=null
     var recycler_cart:RecyclerView?=null
     var adapter:MyCartAdapter?=null
+    lateinit var visaCardRef: DatabaseReference
+
 
     lateinit var listener:ILoadTimeFromFirebaseCallBack
 
@@ -102,6 +108,10 @@ class CartFragment : Fragment(), ILoadTimeFromFirebaseCallBack {
             }
 
         })
+
+        visaCardRef = FirebaseDatabase.getInstance().getReference("Card")
+
+
         return root
     }
 
@@ -183,9 +193,20 @@ class CartFragment : Fragment(), ILoadTimeFromFirebaseCallBack {
            val rdi_home = view.findViewById<View>(R.id.rdi_home_address) as RadioButton
            val rdi_other_address = view.findViewById<View>(R.id.rdi_other_address) as RadioButton
 
-
+           val CreditCradView = view.findViewById<View>(R.id.visaCardCardView) as CardView
            val rdi_cod = view.findViewById<View>(R.id.rdi_cod) as RadioButton
            val rdi_card = view.findViewById<View>(R.id.rdi_Card) as RadioButton
+            val card_number = view.findViewById<View>(R.id.cardNumberEditText) as EditText
+           val card_holder_name = view.findViewById<View>(R.id.nameOnCardEditText) as EditText
+           val card_expired_date = view.findViewById<View>(R.id.mmyyEditText) as EditText
+           val card_CVC = view.findViewById<View>(R.id.cvcEditText) as EditText
+           val btn_creditcard = view.findViewById<View>(R.id.btn_creditcard) as Button
+
+
+            nameOnCard = card_holder_name
+            mmyy = card_expired_date
+              cvc = card_CVC
+           cardNumber = card_number
 
 
             //Data
@@ -204,17 +225,98 @@ class CartFragment : Fragment(), ILoadTimeFromFirebaseCallBack {
                }
            }
 
+           rdi_cod.setOnCheckedChangeListener{ compoundButton, b ->
+               if(b)
+               {
+                   CreditCradView!!.visibility= View.GONE
+
+               }
+           }
+
+           rdi_card.setOnCheckedChangeListener{ compoundButton, b ->
+               if(b)
+               {
+                   CreditCradView!!.visibility= View.VISIBLE
+               }
+           }
+
+           btn_creditcard.setOnClickListener{
+               if (verifyVisaCard()) {
+                   visaCardRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                       override fun onCancelled(p0: DatabaseError) {
+                       }
+
+                       override fun onDataChange(p0: DataSnapshot) {
+                           if (p0.exists()) {
+                               val visacard = p0.getValue(VisaCard::class.java)
+                               if (visacard!!.nameOnCard == nameOnCard.text.toString() &&
+                                   visacard.cardNumber == cardNumber.text.toString() &&
+                                   visacard.mmyy == mmyy.text.toString() &&
+                                   visacard.cvc == cvc.text.toString()) {
+                                   CreditCard(edt_address.text.toString())
+                                   val builder = AlertDialog.Builder(context)
+                                   builder.setTitle("Transaction completed")
+                                   builder.setPositiveButton(android.R.string.ok) { dialog, which ->
+                                       val intent = Intent(activity, UserActivity::class.java)
+                                       intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                       startActivity(intent)
+                                   }
+                                   builder.show()
+                               } else {
+                                   val builder = AlertDialog.Builder(context)
+                                   builder.setTitle("Invalid visa card info!")
+                                   builder.setPositiveButton(android.R.string.ok) { dialog, which -> }
+                                   builder.show()
+                               }
+                           }
+                       }
+                   })
+               }
+           }
+
+
+
            builder.setView(view)
-           builder.setNegativeButton("NO",{dialogInterface,_ -> dialogInterface.dismiss()})
-               .setPositiveButton("YES",{dialogInterface, _ ->
-                   if(rdi_cod.isChecked)
+           builder.setNegativeButton("NO") { dialogInterface, _ -> dialogInterface.dismiss()}
+               .setPositiveButton("YES") { dialogInterface, _ ->
+                   if(rdi_cod.isChecked) {
                        paymentCOD(edt_address.text.toString())
-               })
+
+
+                   }else if(rdi_card.isChecked){
+
+
+                   }
+
+
+               }
 
            val dialog = builder.create()
            dialog.show()
 
        }
+    }
+
+
+    private fun verifyVisaCard(): Boolean {
+        var isValid = true
+        if (nameOnCard.text.isEmpty()) {
+            isValid = false
+            nameOnCard.setError("Name on card cannot be blank")
+        }
+        if (cardNumber.text.isEmpty()) {
+            isValid = false
+            cardNumber.setError("Card number cannot be blank")
+        }
+        if (mmyy.text.isEmpty()) {
+            isValid = false
+            mmyy.setError("MM/YY cannot be blank")
+        }
+        if (cvc.text.isEmpty()) {
+            isValid = false
+            cvc.setError("CVC cannot be blank")
+        }
+        return isValid
     }
 
     private fun paymentCOD(address: String) {
@@ -252,6 +354,50 @@ class CartFragment : Fragment(), ILoadTimeFromFirebaseCallBack {
                         override fun onError(e: Throwable) {
                             if(!e.message!!.contains("Query returned empty"))
                             Toast.makeText(context!!,""+e.message,Toast.LENGTH_SHORT).show()
+                        }
+
+
+                    })
+
+            },{throwable -> Toast.makeText(context!!,""+throwable.message,Toast.LENGTH_SHORT).show()  }))
+
+    }
+
+    private fun CreditCard(address: String) {
+        compositeDisposable.add(cartDataSource!!.getAllCart(user!!.uid)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ cartItemList ->
+
+                //when we have all cartItems , we will get total price
+                cartDataSource!!.sumPrice(user!!.uid)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(object:SingleObserver<Double>{
+                        override fun onSuccess(totalPrice: Double) {
+                            val finalPrice = totalPrice
+                            val order = Order()
+                            order.userId = user!!.uid
+                            order.userName = Common.userName
+                            order.shippingAddress = address
+                            order.cartItemList = cartItemList
+                            order.totalPayment = totalPrice
+                            order.finalPayment = finalPrice
+                            order.discount = 0
+                            order.isCod = false
+                            order.transactionId = "Credit Card"
+
+                            //Submit to Firebase
+                            syncLocalTimeWithServerTime(order)
+                        }
+
+                        override fun onSubscribe(d: Disposable) {
+
+                        }
+
+                        override fun onError(e: Throwable) {
+                            if(!e.message!!.contains("Query returned empty"))
+                                Toast.makeText(context!!,""+e.message,Toast.LENGTH_SHORT).show()
                         }
 
 
