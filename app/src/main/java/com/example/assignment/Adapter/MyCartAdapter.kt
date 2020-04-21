@@ -60,7 +60,7 @@ class MyCartAdapter (internal var context: Context,
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
        Glide.with(context).load(cartItems[position].foodImage).into(holder.img_cart)
         holder.txt_food_name.text = StringBuilder(cartItems[position].foodName!!)
-        holder.txt_food_price.text = StringBuilder("").append(cartItems[position].foodPrice + cartItems[position].foodExtraPrice)
+        holder.txt_food_price.text = StringBuilder("RM ").append(cartItems[position].foodPrice + cartItems[position].foodExtraPrice)
         holder.number_button.number = cartItems[position].foodQuantity.toString()
 
         //Event

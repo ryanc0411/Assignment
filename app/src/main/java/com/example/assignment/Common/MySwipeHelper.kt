@@ -36,7 +36,7 @@ abstract class MySwipeHelper(context:Context,
     private val gestureListener = object : GestureDetector.SimpleOnGestureListener() {
         override fun onSingleTapUp(e: MotionEvent?): Boolean {
            for(button in buttonList!!)
-               if(button.onClick(e!!.x,e!!.y))
+               if(button.onClick(e!!.x,e.y))
                    break
             return true
         }
@@ -44,7 +44,7 @@ abstract class MySwipeHelper(context:Context,
     }
 
     private val onTouchListener= View.OnTouchListener{ _, motionEvent ->
-        if(swipePosition <0) return@OnTouchListener false
+        if(swipePosition < 0) return@OnTouchListener false
         val point = Point(motionEvent.rawX.toInt(),motionEvent.rawX.toInt())
 
         val swipeViewHolder = recyclerView.findViewHolderForAdapterPosition(swipePosition)
@@ -52,9 +52,9 @@ abstract class MySwipeHelper(context:Context,
         val rect=Rect()
         swipedItem.getGlobalVisibleRect(rect)
 
-        if(motionEvent.action==MotionEvent.ACTION_DOWN ||
-            motionEvent.action==MotionEvent.ACTION_UP  ||
-            motionEvent.action==MotionEvent.ACTION_MOVE )
+        if(motionEvent.action == MotionEvent.ACTION_DOWN ||
+            motionEvent.action == MotionEvent.ACTION_UP  ||
+            motionEvent.action == MotionEvent.ACTION_MOVE )
         {
             if(rect.top < point.y && rect.bottom > point.y)
                 gestureDetector.onTouchEvent(motionEvent)
@@ -89,7 +89,7 @@ abstract class MySwipeHelper(context:Context,
     private fun recoverSwipedItem() {
         while(!removerQueue.isEmpty())
         {
-            val pos = removerQueue.poll()
+            val pos = removerQueue.poll()!!
             if(pos > -1)
                 recyclerView.adapter!!.notifyItemChanged(pos)
         }
@@ -143,7 +143,7 @@ abstract class MySwipeHelper(context:Context,
             if(imageResId == 0) //Test
             {
                 x = cWidth/2f - r.width()/2f - r.left.toFloat()
-                y = cHeight/2f+r.height()/2f - r.bottom
+                y = cHeight/2f + r.height()/2f - r.bottom
                 c.drawText(text,rectF.left+x,rectF.top+y,p)
 
             }else{
@@ -160,7 +160,7 @@ abstract class MySwipeHelper(context:Context,
     private fun drawableToBitmap(d: Drawable?): Bitmap {
      if(d!! is BitmapDrawable)
          return d.toBitmap()
-        val bitmap = Bitmap.createBitmap(d!!.intrinsicWidth,d.intrinsicHeight,Bitmap.Config.ARGB_8888)
+        val bitmap = Bitmap.createBitmap(d.intrinsicWidth,d.intrinsicHeight,Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         d.setBounds(0,0,canvas.width,canvas.height)
         d.draw(canvas)
@@ -195,13 +195,15 @@ abstract class MySwipeHelper(context:Context,
         return swipeThreshold
     }
 
-    override fun getSwipeVelocityThreshold(defaultValue: Float): Float {
+    override fun getSwipeEscapeVelocity(defaultValue: Float): Float {
         return 0.1f*defaultValue
     }
 
-    override fun getSwipeEscapeVelocity(defaultValue: Float): Float {
+    override fun getSwipeVelocityThreshold(defaultValue: Float): Float {
         return 5.0f*defaultValue
     }
+
+
 
     override fun onChildDraw(
         c: Canvas,
@@ -222,7 +224,7 @@ abstract class MySwipeHelper(context:Context,
         }
         if(actionState == ItemTouchHelper.ACTION_STATE_SWIPE)
         {
-            if(dX<0)
+            if(dX < 0)
             {
                 var buffer : MutableList<MyButton> = ArrayList()
                 if(!buttonBuffer.containsKey(pos))

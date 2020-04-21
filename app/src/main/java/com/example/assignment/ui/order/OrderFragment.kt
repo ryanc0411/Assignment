@@ -8,7 +8,9 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.example.assignment.EventBus.MenuItemBack
 import com.example.assignment.R
+import org.greenrobot.eventbus.EventBus
 
 class OrderFragment : Fragment() {
 
@@ -27,5 +29,10 @@ class OrderFragment : Fragment() {
             textView.text = it
         })
         return root
+    }
+
+    override fun onDestroy() {
+        EventBus.getDefault().postSticky(MenuItemBack())
+        super.onDestroy()
     }
 }

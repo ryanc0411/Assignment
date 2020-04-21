@@ -1,26 +1,31 @@
 package com.example.assignment.ui.fooddetails
 
 import android.app.AlertDialog
-import androidx.lifecycle.ViewModelProviders
+import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.andremion.counterfab.CounterFab
 import com.bumptech.glide.Glide
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
 import com.example.assignment.Common.Common
 import com.example.assignment.EventBus.CountCartEvent
+import com.example.assignment.EventBus.MenuItemBack
 import com.example.assignment.EventBus.navigate
 import com.example.assignment.Model.FoodModel
 import com.example.assignment.Model.RatingModel
 import com.example.assignment.R
-import com.example.assignment.database.Entity.*
+import com.example.assignment.database.Entity.CartDataSource
+import com.example.assignment.database.Entity.CartDatabase
+import com.example.assignment.database.Entity.CartItem
+import com.example.assignment.database.Entity.LocalCartDataSource
 import com.example.assignment.ui.cart.FoodDetailViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.chip.Chip
@@ -34,7 +39,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import org.greenrobot.eventbus.EventBus
-import java.lang.StringBuilder
 
 
 class FoodDetailFragment : Fragment(), TextWatcher {
@@ -76,12 +80,12 @@ class FoodDetailFragment : Fragment(), TextWatcher {
             ViewModelProviders.of(this).get(FoodDetailViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_food_detail, container, false)
         initViews(root)
-        foodDetailViewModel.getMutableLiveDataFood().observe(this, Observer {
+        foodDetailViewModel.getMutableLiveDataFood().observe(viewLifecycleOwner, Observer {
             displayInfo(it)
 
         })
 
-        foodDetailViewModel.getMutableLiveDataComment().observe(this, Observer {
+        foodDetailViewModel.getMutableLiveDataComment().observe(viewLifecycleOwner, Observer {
             submitRatingToFirebase(it)
         })
         return root
@@ -323,8 +327,8 @@ class FoodDetailFragment : Fragment(), TextWatcher {
                     }
                     chip_group_addon!!.addView(chip)
                 }
-            }
         }
+    }
 
 
     private fun displayUserSelectedAddon() {
@@ -337,14 +341,14 @@ class FoodDetailFragment : Fragment(), TextWatcher {
                 chip.text = StringBuilder(addonModel.name!!).append("(+RM").append(addonModel.price!!).append(")").toString()
                 chip.isCheckable = false
                 chip.setOnCloseIconClickListener{
-                    chip_group_user_selected_addon!!.removeView(view)
+                    chip_group_user_selected_addon!!.removeView(it)
                     Common.foodSelected!!.userSelectedAddon!!.remove(addonModel)
                     calculateTotalPrice()
                 }
                 chip_group_user_selected_addon!!.addView(chip)
             }
         }
-        else if (Common.foodSelected!!.userSelectedAddon!!.size==0)
+        else
             chip_group_user_selected_addon!!.removeAllViews()
     }
 
@@ -378,11 +382,9 @@ class FoodDetailFragment : Fragment(), TextWatcher {
     }
 
     override fun afterTextChanged(s: Editable?) {
-
     }
 
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
     }
 
     override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
@@ -403,7 +405,31 @@ class FoodDetailFragment : Fragment(), TextWatcher {
                 }
                 chip_group_addon!!.addView(chip)
 
+
+
             }
+
         }
     }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().isRegistered(this)
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+        compositeDisposable.clear()
+        if(EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().unregister(this)
+
+    }
+
+    override fun onDestroy() {
+        EventBus.getDefault().postSticky(MenuItemBack())
+        super.onDestroy()
+    }
 }
+
+

@@ -23,10 +23,17 @@
             android:id="@+id/nav_order"
             android:icon="@drawable/ic_event_available_black_24dp"
             android:title="@string/menu_order" />
-
-        <item
-            android:id="@+id/nav_logout"
-            android:icon="@drawable/ic_exit_to_app_black_24dp"
-            android:title="@string/menu_logout" />
     </group>
+    <group>
+            <item android:title="">
+                <menu>
+                    <item
+                        android:id="@+id/nav_logout"
+                        android:icon="@drawable/ic_exit_to_app_black_24dp"
+                        android:title="@string/menu_logout" />
+                </menu>
+            </item>
+
+
+</group>
 </menu>

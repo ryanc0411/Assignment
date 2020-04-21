@@ -4,9 +4,12 @@ import com.example.assignment.Model.AddonModel
 import com.example.assignment.Model.CategoryModel
 import com.example.assignment.Model.FoodModel
 import com.example.assignment.Model.SizeModel
+import com.example.assignment.database.Entity.Users
 import java.lang.StringBuilder
 import java.math.RoundingMode
 import java.text.DecimalFormat
+import kotlin.math.abs
+import kotlin.random.Random
 
 
 object Common {
@@ -51,6 +54,13 @@ object Common {
         }
     }
 
+    fun createOrderNumber(): String {
+        return StringBuilder().append(System.currentTimeMillis()).append(abs(Random.nextInt()))
+            .toString()
+
+    }
+
+    val ORDER_REF: String="Order"
     val COMMENT_REF: String="Comments"
     var foodSelected: FoodModel? = null
     var categorySelected: CategoryModel?=null
@@ -59,4 +69,9 @@ object Common {
     val POPULAR_REF: String="MostPopular"
     val FULL_WIDTH_COLUMN: Int = 1
     val DEFAULT_COLUMN_COUNT: Int=0
+    var homeAddress : String?=null
+    var userName : String?=null
+
+    var isValid : Int=0
+
 }

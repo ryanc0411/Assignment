@@ -17,6 +17,8 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import com.example.assignment.Common.Common
+import com.example.assignment.EventBus.MenuItemBack
 import com.example.assignment.R
 import com.example.assignment.SellerActivity
 import com.example.assignment.UserActivity
@@ -29,7 +31,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.SignInMethodQueryResult
 import com.google.firebase.database.*
+import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_login.view.*
+import org.greenrobot.eventbus.EventBus
 
 
 class LoginFragment : Fragment() {
@@ -223,6 +227,9 @@ class LoginFragment : Fragment() {
                     val editor: SharedPreferences.Editor = sharedPreferences.edit()
                     editor.putString("username",urole.username)
                     editor.commit()
+
+                    Common.userName = urole.username
+                    Common.homeAddress = urole.homeAddress
                     val intent = Intent(activity, UserActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
@@ -230,6 +237,8 @@ class LoginFragment : Fragment() {
 
                 } else {
                     // redirect to the seller page
+                    Common.userName = urole.username
+                    Common.homeAddress = urole.homeAddress
                     val intent = Intent(activity, SellerActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
@@ -284,6 +293,11 @@ class LoginFragment : Fragment() {
 
             }
         })
+    }
+
+    override fun onDestroy() {
+        EventBus.getDefault().postSticky(MenuItemBack())
+        super.onDestroy()
     }
 
 }

@@ -9,11 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.RadioButton
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import com.example.assignment.R
 import com.google.android.gms.tasks.OnCompleteListener
@@ -22,11 +19,11 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.SignInMethodQueryResult
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import androidx.databinding.DataBindingUtil
 import com.example.assignment.database.Entity.LoginAttempt
 import com.example.assignment.database.Entity.Users
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_register.view.*
+import java.util.regex.Pattern.compile
 
 class RegisterFragment : Fragment() {
 
@@ -34,6 +31,7 @@ class RegisterFragment : Fragment() {
     lateinit var emailText: EditText
     lateinit var  passwordText: EditText
     lateinit var retypeText: EditText
+    lateinit var homeAddress: EditText
     lateinit var custBtn: RadioButton
     lateinit var sellBtn: RadioButton
     lateinit var ref: DatabaseReference
@@ -56,6 +54,7 @@ class RegisterFragment : Fragment() {
         emailText = root.emailEditText
         passwordText = root.passwordEditText
         retypeText = root.retypePasswordEditText
+        homeAddress = root.addressEditText
         custBtn = root.customerButton
         sellBtn = root.sellerButton
 
@@ -78,7 +77,7 @@ class RegisterFragment : Fragment() {
 
     private fun checkUserInput(): Boolean {
         var isValid = true
-
+        val patterns = compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%!\\-_?&])(?=\\S+\$).{8,}")
         // ensure there is not any blank edit text
         if (nameText.text.toString().trim().isEmpty()) {
             nameText.setError("Name is required")
@@ -91,9 +90,17 @@ class RegisterFragment : Fragment() {
         if (passwordText.text.toString().isEmpty()) {
             passwordText.setError("Password is required")
             isValid = false
+        }else if((!patterns.matcher(passwordText.text.toString()).matches())){
+            passwordText.setError("Password format must have 8 character and include uppercase, lowercase, number and symbol")
+            isValid = false
         }
+
         if (retypeText.text.toString().isEmpty()) {
             retypeText.setError("Retype password is required")
+            isValid = false
+        }
+        if (homeAddress.text.toString().isEmpty()) {
+            homeAddress.setError("Home Address is required")
             isValid = false
         }
 
@@ -152,7 +159,7 @@ class RegisterFragment : Fragment() {
 
                     if (custBtn.isChecked) {
                         // register as a customer
-                        val newUser = Users(uid, nameText.text.toString(), "Customer")
+                        val newUser = Users(uid, nameText.text.toString(), "Customer",homeAddress.text.toString())
                         ref.child(uid).setValue(newUser).addOnCompleteListener {
                             loading.dismiss()
                             //pop up a dialog, after user click ok, it will redirect to login page
@@ -166,7 +173,7 @@ class RegisterFragment : Fragment() {
                         }
                     } else {
                         // register as a seller
-                        val newUser = Users(uid, nameText.text.toString(), "Seller")
+                        val newUser = Users(uid, nameText.text.toString(), "Seller",homeAddress.text.toString())
                         ref.child(uid).setValue(newUser).addOnCompleteListener {
                             loading.dismiss()
                             //pop up a dialog, after user click ok, it will redirect to login page

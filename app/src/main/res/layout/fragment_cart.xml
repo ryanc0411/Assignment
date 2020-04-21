@@ -10,10 +10,12 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_cart"
+        android:layout_alignParentTop="true"
         android:layout_above="@+id/group_place_holder"
         android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"
+        />
 
     <TextView
         android:id="@+id/text_empty_cart"

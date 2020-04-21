@@ -16,7 +16,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.asksira.loopingviewpager.LoopingViewPager
 import com.example.assignment.Adapter.MyBestDealsAdapter
 import com.example.assignment.Adapter.MyPopularCategoriesAdapter
+import com.example.assignment.EventBus.MenuItemBack
 import com.example.assignment.R
+import org.greenrobot.eventbus.EventBus
 
 class HomeFragment : Fragment() {
 
@@ -61,6 +63,11 @@ class HomeFragment : Fragment() {
         recyclerView = root.findViewById(R.id.recycler_popular) as RecyclerView
         recyclerView!!.setHasFixedSize(true)
         recyclerView!!.layoutManager=LinearLayoutManager(context,RecyclerView.HORIZONTAL,false)
+    }
+
+    override fun onDestroy() {
+        EventBus.getDefault().postSticky(MenuItemBack())
+        super.onDestroy()
     }
 
 

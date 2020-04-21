@@ -56,7 +56,7 @@ class MyFoodListAdapter (internal var context: Context,
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         Glide.with(context).load(foodList.get(position).image).into(holder.img_food_image!!)
         holder.txt_food_name!!.setText(foodList.get(position).name)
-        holder.txt_food_price!!.setText(foodList.get(position).price.toString())
+        holder.txt_food_price!!.setText("RM "+foodList.get(position).price.toString())
 
         //Event
         holder.setListner(object : IRecyclerItemClickListener {

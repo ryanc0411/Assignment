@@ -24,7 +24,7 @@ tools:context="com.example.assignment.register.RegisterFragment">
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="320dp"
-        android:layout_height="400dp"
+        android:layout_height="wrap_content"
         app:cardBackgroundColor="#fff"
         app:cardCornerRadius="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -86,6 +86,15 @@ tools:context="com.example.assignment.register.RegisterFragment">
                 android:ems="10"
                 android:hint="Retype Password"
                 android:inputType="textPassword"
+                android:text="" />
+
+            <EditText
+                android:id="@+id/addressEditText"
+                style="@style/login_edit_text"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Home Address"
                 android:text="" />
 
             <RadioGroup
