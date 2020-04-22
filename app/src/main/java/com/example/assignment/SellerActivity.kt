@@ -27,7 +27,7 @@ import com.google.firebase.auth.FirebaseAuth
 class SellerActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
-    private var menuItemClick=-1
+    private var menuItemClick:Int=-1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +41,7 @@ class SellerActivity : AppCompatActivity() {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(setOf(
-            R.id.nav_home, R.id.nav_logout,R.id.nav_food_list,R.id.nav_login,R.id.nav_logout), drawerLayout)
+            R.id.nav_home, R.id.nav_logout,R.id.nav_menu,R.id.nav_food_list,R.id.nav_food_detail,R.id.nav_seller_order,R.id.nav_logout), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
@@ -53,35 +53,43 @@ class SellerActivity : AppCompatActivity() {
                     signOut()
                 }else if(p0.itemId == R.id.nav_menu){
                     if(menuItemClick!=p0.itemId)
+                    {
+                        navController.popBackStack() //clear back stack
                         navController.navigate(R.id.nav_menu)
+                    }
                 } else if(p0.itemId == R.id.nav_home){
                     if(menuItemClick!=p0.itemId)
+                    {
+                        navController.popBackStack() //clear back stack
                         navController.navigate(R.id.nav_home)
-                } else if(p0.itemId == R.id.nav_cart){
+                    }
+
+                } else if(p0.itemId == R.id.nav_seller_order){
                     if(menuItemClick!=p0.itemId)
-                        navController.navigate(R.id.nav_cart)
-                } else if(p0.itemId == R.id.nav_order){
-                    if(menuItemClick!=p0.itemId)
-                        navController.navigate(R.id.nav_order)
+                    {
+                        navController.popBackStack() //clear back stack
+                        navController.navigate(R.id.nav_seller_order)
+                    }
+
                 }
+
 
                 menuItemClick = p0!!.itemId
                 return true
 
             }
-
-
-
         })
+
+        menuItemClick = R.id.nav_home // default
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
         val sharedPreferences: SharedPreferences = this.getSharedPreferences("username1", Context.MODE_PRIVATE )
         val textView: TextView = findViewById<TextView>(R.id.Usernametext)
         val username = sharedPreferences.getString("username","TARUC FOOD")
-        textView.text =  username
+        textView.text =  "Hey, " + username
+
 
         return true
     }
@@ -101,7 +109,7 @@ class SellerActivity : AppCompatActivity() {
                 Common.categorySelected = null
                 FirebaseAuth.getInstance().signOut()
 
-                val intent = Intent(this, MainActivity::class.java)
+                val intent = Intent(this@SellerActivity, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
                 Toast.makeText(this, "Logout Successful", Toast.LENGTH_SHORT).show()

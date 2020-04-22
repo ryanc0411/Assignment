@@ -2,7 +2,7 @@ package com.example.assignment.database.Entity
 
 
 class LoginAttempt(
-    val currentAttempt: Int
+    var currentAttempt: Int
 ) {
 
     constructor() : this(0)

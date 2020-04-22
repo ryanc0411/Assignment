@@ -547,10 +547,6 @@ class CartFragment : Fragment(), ILoadTimeFromFirebaseCallBack {
 
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        menu!!.findItem(R.id.action_settings).setVisible(false)
-        super.onPrepareOptionsMenu(menu)
-    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.cart_menu,menu)

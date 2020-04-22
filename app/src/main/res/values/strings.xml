@@ -43,6 +43,7 @@
     <string name="card_number">Card Number</string>
     <string name="mm_yy">MM/YY</string>
     <string name="cvc">CVC</string>
+    <string name="action_filter">Filter</string>
 
 
 </resources>

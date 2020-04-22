@@ -176,7 +176,7 @@ class LoginFragment : Fragment() {
                             override fun onDataChange(p0: DataSnapshot) {
                                 val currentAttempt =
                                     p0.getValue(LoginAttempt::class.java)!!.currentAttempt
-                                if (currentAttempt < 4) {
+                                if (currentAttempt < 3) {
                                     // login attempt within valid range, proceed to login
                                     resetLoginAttempt()
                                     // determine the login user role

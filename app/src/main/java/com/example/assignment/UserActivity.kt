@@ -142,7 +142,6 @@ class UserActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
         val sharedPreferences: SharedPreferences = this.getSharedPreferences("username1", Context.MODE_PRIVATE )
         val textView: TextView = findViewById<TextView>(R.id.Usernametext)
         val username = sharedPreferences.getString("username","TARUC FOOD")

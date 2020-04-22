@@ -1,5 +1,12 @@
 package com.example.assignment.Common
 
+import android.graphics.Typeface
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
+import android.widget.TextView
 import com.example.assignment.Model.AddonModel
 import com.example.assignment.Model.CategoryModel
 import com.example.assignment.Model.FoodModel
@@ -84,6 +91,42 @@ object Common {
             else -> return "Unk"
         }
     }
+
+
+    fun setSpanString(welcome: String, name: String?, txtUser: TextView?) {
+        val builder = SpannableStringBuilder()
+        builder.append(welcome)
+        val txtSpannable = SpannableString(name)
+        val boldSpan = StyleSpan(Typeface.BOLD)
+        txtSpannable.setSpan(boldSpan,0,name!!.length,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        builder.append(txtSpannable)
+        txtUser!!.setText(builder,TextView.BufferType.SPANNABLE)
+
+    }
+
+
+    fun setSpanStringColor(welcome: String, name: String?, txtUser: TextView?, color: Int) {
+        val builder = SpannableStringBuilder()
+        builder.append(welcome)
+        val txtSpannable = SpannableString(name)
+        val boldSpan = StyleSpan(Typeface.BOLD)
+        txtSpannable.setSpan(boldSpan,0,name!!.length,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        txtSpannable.setSpan(ForegroundColorSpan(color),0,name!!.length,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        builder.append(txtSpannable)
+        txtUser!!.setText(builder,TextView.BufferType.SPANNABLE)
+
+    }
+
+    fun convertStatusToString(orderStatus: Int): String? =
+        when(orderStatus)
+        {
+            0-> "Placed"
+            1 -> "Shipping"
+            2-> "Shipped"
+            -1 -> "Cancel"
+            else -> "Error"
+        }
+
 
     val ORDER_REF: String="Order"
     val COMMENT_REF: String="Comments"
