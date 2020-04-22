@@ -143,6 +143,27 @@ class CartFragment : Fragment(), ILoadTimeFromFirebaseCallBack {
                    object : IMyButtonCallback
                    {
                        override fun onClick(pos: Int) {
+                           if(pos == 0){
+                               cartDataSource!!.cleanCart(user!!.uid)
+                                   .subscribeOn(Schedulers.io())
+                                   .observeOn(AndroidSchedulers.mainThread())
+                                   .subscribe(object : SingleObserver<Int>{
+                                       override fun onSuccess(t: Int) {
+                                           Toast.makeText(context,"Clear Cart Success",Toast.LENGTH_SHORT).show()
+                                           EventBus.getDefault().postSticky(CountCartEvent(true))
+                                       }
+
+                                       override fun onSubscribe(d: Disposable) {
+
+                                       }
+
+                                       override fun onError(e: Throwable) {
+                                           if(!e.message!!.contains("Query returned empty"))
+                                               Toast.makeText(context,""+e.message,Toast.LENGTH_SHORT).show()
+                                       }
+
+                                   })
+                           }
                            val deleteItem = adapter!!.getItemAtPosition(pos)
                            cartDataSource!!.deleteCart(deleteItem)
                                .subscribeOn(Schedulers.io())

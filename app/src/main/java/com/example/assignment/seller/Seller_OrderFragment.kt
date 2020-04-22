@@ -25,6 +25,7 @@ import com.example.assignment.Callback.IMyButtonCallback
 import com.example.assignment.Common.BottomSheetOrderFragment
 import com.example.assignment.Common.Common
 import com.example.assignment.Common.MySwipeHelper
+import com.example.assignment.Common.MySwipeHelperSeller
 import com.example.assignment.EventBus.ChangeMenuClick
 import com.example.assignment.EventBus.LoadOrderEvent
 import com.example.assignment.Model.Order_seller_Model
@@ -89,7 +90,7 @@ class Seller_OrderFragment:Fragment()
         activity!!.windowManager.defaultDisplay.getMetrics(displayMetrics)
         val width = displayMetrics.widthPixels
 
-        val swipe = object : MySwipeHelper(requireContext(),recycler_seller_order!!,width/6){
+        val swipe = object : MySwipeHelperSeller(requireContext(),recycler_seller_order!!,width/6){
             override fun instantiateMyButton(
                 viewHolder: RecyclerView.ViewHolder,
                 buffer: MutableList<MyButton>
@@ -164,6 +165,7 @@ class Seller_OrderFragment:Fragment()
         var rdi_shipped:RadioButton?=null
         var rdi_delete:RadioButton?=null
         var rdi_restore_placed:RadioButton?=null
+        var txt_status:TextView?=null
 
         if(orderModel.orderStatus == -1)
         {
@@ -173,6 +175,7 @@ class Seller_OrderFragment:Fragment()
                 .setView(layout_dialog)
             rdi_delete  = layout_dialog.findViewById<View>(R.id.rdi_delete) as RadioButton
             rdi_restore_placed  = layout_dialog.findViewById<View>(R.id.rdi_restore_placed) as RadioButton
+            txt_status =  layout_dialog.findViewById<View>(R.id.txt_status) as TextView
         }
         else if(orderModel.orderStatus == 0)
             {
@@ -183,6 +186,7 @@ class Seller_OrderFragment:Fragment()
                     .setView(layout_dialog)
                 rdi_shipping  = layout_dialog.findViewById<View>(R.id.rdi_shipping) as RadioButton
                 rdi_cancelled  = layout_dialog.findViewById<View>(R.id.rdi_cancelled) as RadioButton
+                txt_status =  layout_dialog.findViewById<View>(R.id.txt_status) as TextView
             }
         else
         {
@@ -192,6 +196,7 @@ class Seller_OrderFragment:Fragment()
                 .setView(layout_dialog)
             rdi_shipped  = layout_dialog.findViewById<View>(R.id.rdi_shipped) as RadioButton
             rdi_cancelled  = layout_dialog.findViewById<View>(R.id.rdi_cancelled) as RadioButton
+            txt_status =  layout_dialog.findViewById<View>(R.id.txt_status) as TextView
         }
 
         //View
@@ -202,7 +207,7 @@ class Seller_OrderFragment:Fragment()
 
 
 
-        val txt_status =  layout_dialog.findViewById<View>(R.id.txt_status) as TextView
+
 
         //Set data
         txt_status.setText(StringBuilder("Order Status (")
